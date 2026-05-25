@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Split Expenses</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
+  min-height: 100vh;
+  color: #e0e0e0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00e5ff 0%, #a259ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-bottom: 40px;
+  font-size: 0.9rem;
+}
+
+.form-section {
+  background: rgba(26, 10, 46, 0.6);
+  border: 1px solid rgba(162, 89, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(162, 89, 255, 0.3);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #a259ff;
+  box-shadow: 0 0 0 3px rgba(162, 89, 255, 0.1);
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00e5ff 0%, #a259ff 100%);
+  color: #000;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(162, 89, 255, 0.4);
+}
+
+.btn-danger {
+  background: rgba(255, 59, 89, 0.2);
+  color: #ff3b59;
+  border: 1px solid rgba(255, 59, 89, 0.3);
+}
+
+.btn-danger:hover {
+  background: rgba(255, 59, 89, 0.3);
+}
+
+.balance-section {
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.balance-title {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.balance-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00e5ff;
+  margin-bottom: 8px;
+}
+
+.balance-detail {
+  color: #a0a0a0;
+  font-size: 0.95rem;
+}
+
+.transactions-section {
+  background: rgba(26, 10, 46, 0.6);
+  border: 1px solid rgba(162, 89, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: #a259ff;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transaction {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(162, 89, 255, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transaction-info {
+  flex: 1;
+}
+
+.transaction-person {
+  font-weight: 600;
+  color: #00e5ff;
+  margin-bottom: 4px;
+}
+
+.transaction-desc {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+}
+
+.transaction-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-right: 12px;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: #ff3b59;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 8px;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.btn-delete:hover {
+  opacity: 1;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  padding: 40px 20px;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .form-section, .balance-section, .transactions-section {
+    padding: 16px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Split Expenses</h1>
+  <div class="subtitle">Matúško & Ahmetko</div>
+  
+  <div class="form-section">
+    <div class="form-group">
+      <label>Who paid?</label>
+      <select id="person">
+        <option value="Matúško">Matúško</option>
+        <option value="Ahmetko">Ahmetko</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Amount (€)</label>
+      <input type="number" id="amount" step="0.01" placeholder="0.00">
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" id="description" placeholder="What was it for?">
+    </div>
+    
+    <button class="btn btn-primary" onclick="addTransaction()">Add Transaction</button>
+  </div>
+  
+  <div class="balance-section" id="balanceSection" style="display: none;">
+    <div class="balance-title">SETTLEMENT</div>
+    <div class="balance-amount" id="balanceAmount">€0.00</div>
+    <div class="balance-detail" id="balanceDetail"></div>
+  </div>
+  
+  <div class="transactions-section">
+    <div class="section-title">
+      <span>Transactions</span>
+      <button class="btn btn-danger" onclick="clearAll()" style="width: auto; padding: 8px 16px; font-size: 0.9rem;">Clear All</button>
+    </div>
+    <div id="transactionsList">
+      <div class="empty-state">No transactions yet</div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function loadTransactions() {
+  const res = await fetch('/api/transactions');
+  const data = await res.json();
+  renderTransactions(data.transactions);
+  calculateBalance(data.transactions);
+}
+
+function renderTransactions(transactions) {
+  const list = document.getElementById('transactionsList');
+  
+  if (transactions.length === 0) {
+    list.innerHTML = '<div class="empty-state">No transactions yet</div>';
+    return;
+  }
+  
+  list.innerHTML = transactions.map(t => `
+    <div class="transaction">
+      <div class="transaction-info">
+        <div class="transaction-person">${t.person}</div>
+        <div class="transaction-desc">${t.description}</div>
+      </div>
+      <div class="transaction-amount">€${t.amount.toFixed(2)}</div>
+      <button class="btn-delete" onclick="deleteTransaction('${t.id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function calculateBalance(transactions) {
+  const matusko = transactions.filter(t => t.person === 'Matúško').reduce((sum, t) => sum + t.amount, 0);
+  const ahmetko = transactions.filter(t => t.person === 'Ahmetko').reduce((sum, t) => sum + t.amount, 0);
+  
+  const total = matusko + ahmetko;
+  const half = total / 2;
+  const diff = matusko - half;
+  
+  const section = document.getElementById('balanceSection');
+  const amount = document.getElementById('balanceAmount');
+  const detail = document.getElementById('balanceDetail');
+  
+  if (transactions.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  
+  section.style.display = 'block';
+  
+  if (Math.abs(diff) < 0.01) {
+    amount.textContent = '€0.00';
+    detail.textContent = 'All settled up!';
+  } else if (diff > 0) {
+    amount.textContent = `€${Math.abs(diff).toFixed(2)}`;
+    detail.textContent = 'Ahmetko owes Matúško';
+  } else {
+    amount.textContent = `€${Math.abs(diff).toFixed(2)}`;
+    detail.textContent = 'Matúško owes Ahmetko';
+  }
+}
+
+async function addTransaction() {
+  const person = document.getElementById('person').value;
+  const amount = parseFloat(document.getElementById('amount').value);
+  const description = document.getElementById('description').value;
+  
+  if (!amount || amount <= 0) {
+    alert('Please enter a valid amount');
+    return;
+  }
+  
+  if (!description.trim()) {
+    alert('Please enter a description');
+    return;
+  }
+  
+  await fetch('/api/transactions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ person, amount, description })
+  });
+  
+  document.getElementById('amount').value = '';
+  document.getElementById('description').value = '';
+  
+  loadTransactions();
+}
+
+async function deleteTransaction(id) {
+  await fetch(`/api/transactions/${id}`, { method: 'DELETE' });
+  loadTransactions();
+}
+
+async function clearAll() {
+  if (confirm('Clear all transactions?')) {
+    await fetch('/api/transactions', { method: 'DELETE' });
+    loadTransactions();
+  }
+}
+
+loadTransactions();
+</script>
+</body>
+</html>
